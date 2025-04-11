@@ -30,7 +30,44 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+
+        /* The path is empty*/
+        if(nodes.isEmpty()){
+            return new Path(graph);
+        }
+
+        /* The path has only one node*/
+        if(nodes.size() == 1){
+            return new Path(graph, nodes.get(0));
+        }
+
+        /*General case*/
+        for(int i=0; i< nodes.size()-1; i++){ // It runs through Nodes to make the path
+            Node currentNode = nodes.get(i);
+            Node nextNode = nodes.get(i+1);
+            List<Arc> successors = currentNode.getSuccessors();
+
+
+            /* It runs through of currentNode successor */
+            double minimumTravelTime = -1;
+            Arc bestWay = null;
+            for(int j=0; j<currentNode.getNumberOfSuccessors(); j++){
+                Arc arcToNext = successors.get(j);
+                // Check if the arcToNext is an arc between current and next arcs
+                if(nextNode.equals(arcToNext.getDestination())){
+                    // Optimisation of the travel time of the path
+                    if(minimumTravelTime > arcToNext.getMinimumTravelTime() || minimumTravelTime == -1) {
+                        minimumTravelTime = arcToNext.getMinimumTravelTime();
+                        bestWay = arcToNext;
+                    }
+                }
+            }
+            if(minimumTravelTime != -1) {
+                arcs.add(bestWay);
+            }else{
+                throw new IllegalArgumentException("None path find with given Nodes List");
+            }
+        }
         return new Path(graph, arcs);
     }
 
@@ -48,7 +85,43 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+
+        /* The path is empty*/
+        if(nodes.isEmpty()){
+            return new Path(graph);
+        }
+
+        /* The path has only one node*/
+        if(nodes.size() == 1){
+            return new Path(graph, nodes.get(0));
+        }
+
+        /*General case*/
+        for(int i=0; i< nodes.size()-1; i++){
+            Node currentNode = nodes.get(i);
+            Node nextNode = nodes.get(i+1);
+            List<Arc> successors = currentNode.getSuccessors();
+
+            /* It runs through of currentNode successor */
+            float minimumLength = -1;
+            Arc bestWay = null;
+            for(int j=0; j<currentNode.getNumberOfSuccessors(); j++){
+                Arc arcToNext = successors.get(j);
+                // Check if the arcToNext is an arc between current and next arcs
+                if(nextNode.equals(arcToNext.getDestination())){
+                    // Optimisation of the length of the path
+                    if(minimumLength > arcToNext.getLength() || minimumLength == -1) {
+                        minimumLength = arcToNext.getLength();
+                        bestWay = arcToNext;
+                    }
+                }
+            }
+            if(minimumLength != -1) {
+                arcs.add(bestWay);
+            }else{
+                throw new IllegalArgumentException("None path find with given Nodes List");
+            }
+        }
         return new Path(graph, arcs);
     }
 
@@ -184,12 +257,21 @@ public class Path {
      * </ul>
      *
      * @return true if the path is valid, false otherwise.
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-
-        return false;
+        if(isEmpty() || (getArcs().isEmpty() && !isEmpty())){
+            return true;
+        }
+        if(getArcs().get(0).getOrigin() == origin){
+            for(int i=0; i<getArcs().size()-1; i++){
+                Arc currentArc = getArcs().get(i);
+                Arc nextArc = getArcs().get(i+1);
+                if (!currentArc.getDestination().equals(nextArc.getOrigin())){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -199,11 +281,14 @@ public class Path {
      */
     public float getLength() {
         List<Arc> arcsList = getArcs();
-        float length = 0;
-        for(Arc arc : arcsList){
-            length += arc.getLength();
+        if(isValid()){
+            float length = 0;
+            for(Arc arc : arcsList){
+                length += arc.getLength();
+            }
+            return length;
         }
-        return length;
+        throw new IllegalArgumentException("The paths is invalid");
     }
 
     /**
@@ -227,7 +312,6 @@ public class Path {
      * every arc.
      *
      * @return Minimum travel time to travel this path (in seconds).
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
         List<Arc> arcsList = getArcs();
