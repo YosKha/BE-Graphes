@@ -136,16 +136,21 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     public void remove(E x) throws ElementNotFoundException {
         // switch last element in this.array with x
         int index = array.indexOf(x);
-        this.array.set(this.size() -1, x);
+        if (index == -1 || index >= this.currentSize){
+            throw new ElementNotFoundException(x);
+        }
+        this.array.set(index, array.get(this.currentSize-1));
         this.currentSize --;
 
         int indexP = indexParent(index);
         E element = array.get(index);
         E elementP = array.get(indexP);
         //erreur compareTo ">" "<" "=="
-        if(elementP.compareTo(element) < 0){
+        if(elementP.compareTo(element) > 0){
+            percolateUp(index);
             percolateDown(index);
         }else{
+            percolateDown(index);
             percolateUp(index);
         }
     }
