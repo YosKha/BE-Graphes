@@ -190,8 +190,7 @@ public class PathTest {
         }
 
         // Trap construction!
-        path = Path.createFastestPathFromNodes(graph,
-                Arrays.asList(new Node[] { nodes[1] }));
+        path = Path.createFastestPathFromNodes(graph, Arrays.asList(new Node[] { nodes[1] }));
         assertEquals(nodes[1], path.getOrigin());
         assertEquals(0, path.getArcs().size());
 

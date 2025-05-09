@@ -148,10 +148,8 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         //erreur compareTo ">" "<" "=="
         if(elementP.compareTo(element) > 0){
             percolateUp(index);
-            percolateDown(index);
         }else{
             percolateDown(index);
-            percolateUp(index);
         }
     }
 
