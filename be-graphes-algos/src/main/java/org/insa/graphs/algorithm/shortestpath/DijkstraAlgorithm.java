@@ -45,12 +45,21 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         BinaryHeap<Label> heap = new BinaryHeap<>();
         heap.insert(originLabel);
 
+        notifyOriginProcessed(origin);
 
         // Djistra algorithm
         while(!heap.isEmpty()){
             Label currentNodeLabel = heap.deleteMin();
             Node currentNode = currentNodeLabel.getNode();
             List<Arc> successors = currentNode.getSuccessors();
+            notifyNodeMarked(currentNode);
+
+            // It reached the destination
+            if(currentNode.equals(data.getDestination())){
+                notifyDestinationReached(data.getDestination());
+                break;
+            }
+
             for(Arc arc : successors){
                 Node nextNode = arc.getDestination();
                 Label nextNodeLabel = labels[nextNode.getId()];
@@ -58,11 +67,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
                 double costAttempt = currentNodeLabel.getRealisedCost() + arc.getMinimumTravelTime();
                 if(costAttempt < nextNodeLabel.getRealisedCost()){
+                    System.out.println(costAttempt+"\n");
                     nextNodeLabel.setRealisedCost(costAttempt);
                     nextNodeLabel.setParent(arc);
 
                     // The mark represent : "Is the label in the heap"
                     if(!nextNodeLabel.getMark()){
+                        notifyNodeReached(nextNode);
                         heap.insert(nextNodeLabel);
                         nextNodeLabel.setMark(true);
                     }
