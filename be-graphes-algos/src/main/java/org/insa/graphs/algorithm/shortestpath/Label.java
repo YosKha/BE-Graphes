@@ -1,44 +1,71 @@
 package org.insa.graphs.algorithm.shortestpath;
 
+import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 
-public class Label {
+public class Label implements Comparable<Label>{
 
-    private int currentNode;
+    private Node node;
     private double realisedCost;
     private boolean mark;
-    private Node parent;
+    private Arc parent;
 
-    public Label(int currentNode, double realisedCost, boolean mark, Node parent){
-        this.currentNode = currentNode;
+    public Label(Double realisedCost, boolean mark){
+        this.parent = null;
+        this.realisedCost = realisedCost;
+        this.mark = mark;
+    }
+
+    public Label(Node node, double realisedCost, boolean mark, Arc parent){
+        this.node = node;
         this.realisedCost = realisedCost;
         this.mark = mark;
         this.parent = parent;
     }
 
-    public int getCurrentNode(){
-        return this.currentNode;
+    public Node getNode(){
+        return this.node;
     }
+    public void setNode(Node node){this.node = node;}
     public double getRealisedCost(){
         return this.realisedCost;
     }
+
+    public void setRealisedCost(double cost){
+        this.realisedCost = cost;
+    }
+
     public boolean getMark(){
         return this.mark;
     }
-    public Node getParent(){
+
+    public void setMark(boolean mark){
+        this.mark = mark;
+    }
+
+    public Arc getParent(){
         return this.parent;
+    }
+
+    public void setParent(Arc parent){
+        this.parent = parent;
     }
 
     public double getCost(){
         return getRealisedCost();
     }
 
-    public static void initLabelsArray(Label[] labels,int origin,  double initDist){
-        for(Label label : labels){
-            label.parent = null;
-            label.realisedCost = initDist;
-            label.mark = false;
+    @Override
+    public int compareTo(Label o) {
+        double cost1 = this.realisedCost;
+        double cost2 = o.realisedCost;
+        if(cost1 == cost2){
+            return 0;
         }
-        labels[origin].realisedCost = 0;
+        if(cost1 > cost2) {
+            return 1;
+        }else{
+            return -1;
+        }
     }
 }
