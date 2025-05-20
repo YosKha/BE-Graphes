@@ -10,7 +10,7 @@ public class Label implements Comparable<Label>{
     private boolean mark;
     private Arc parent;
 
-    public Label(Double realisedCost, boolean mark){
+    public Label(double realisedCost, boolean mark){
         this.parent = null;
         this.realisedCost = realisedCost;
         this.mark = mark;
@@ -27,10 +27,10 @@ public class Label implements Comparable<Label>{
         return this.node;
     }
     public void setNode(Node node){this.node = node;}
+
     public double getRealisedCost(){
         return this.realisedCost;
     }
-
     public void setRealisedCost(double cost){
         this.realisedCost = cost;
     }
@@ -38,7 +38,6 @@ public class Label implements Comparable<Label>{
     public boolean getMark(){
         return this.mark;
     }
-
     public void setMark(boolean mark){
         this.mark = mark;
     }
@@ -46,14 +45,11 @@ public class Label implements Comparable<Label>{
     public Arc getParent(){
         return this.parent;
     }
-
     public void setParent(Arc parent){
         this.parent = parent;
     }
 
-    public double getCost(){
-        return getRealisedCost();
-    }
+    public double getTotalCost(){return this.realisedCost;}
 
     @Override
     public int compareTo(Label o) {
