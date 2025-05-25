@@ -4,21 +4,30 @@ import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Point;
 
-public class LabelStar extends Label{
+public class LabelStar extends Label implements Comparable<Label>{
+
+    protected double heuristic;
 
     public LabelStar(double realisedCost, boolean mark){
         super(realisedCost, mark);
     }
 
-    public LabelStar(Node node, double realisedCost, boolean mark, Arc parent){
+    public LabelStar(Node node, double realisedCost, boolean mark, Arc parent, Node destination){
         super(node, realisedCost, mark, parent);
+        heuristic = Point.distance(node.getPoint(), destination.getPoint());
+    }
+
+    public double getHeuristic(){
+        return this.heuristic;
+    }
+
+    public void setHeuristic(Node destination){
+        this.heuristic = Point.distance(getNode().getPoint(), destination.getPoint());
     }
 
     @Override
     public double getTotalCost(){
-        Point nodePoint = getNode().getPoint();
-        Point parentPoint = getParent().getDestination().getPoint();
-        return getRealisedCost() + Point.distance(nodePoint, parentPoint);
+        return getRealisedCost() + this.heuristic;
     }
 
     @Override
