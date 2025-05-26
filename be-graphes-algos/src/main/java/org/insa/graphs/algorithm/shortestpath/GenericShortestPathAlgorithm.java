@@ -77,7 +77,7 @@ public abstract class GenericShortestPathAlgorithm<E extends Label> extends Shor
                 }**/
                 this.updateLabel(nextNodeLabel, nextNode);
 
-                double costAttempt = currentNodeLabel.getRealisedCost() + arc.getMinimumTravelTime();
+                double costAttempt = currentNodeLabel.getRealisedCost() + arc.getLength();
                 if(costAttempt < nextNodeLabel.getRealisedCost()){
                     //System.out.println(costAttempt+"\n");
                     nextNodeLabel.setRealisedCost(costAttempt);
