@@ -69,7 +69,6 @@ public class ShortestPathTest {
 
     // origin = destination
     final String mapName8= "maps/insa.mapgr";
-    ////Node Origin = 1333; Node Destination =1103;
     // compare over time
     final String mapName9 ="maps/haute-garonne.mapgr";
     final String pathName9 ="maps/path_fr31_insa_aeroport_time.path";
@@ -272,26 +271,25 @@ public class ShortestPathTest {
             return false;
         }
         for (int i=0;i<ArcsDijkstra.size();i++){
-            // Recuperation des Origines et Destinations
             Node OrigineDijkstra = ArcsDijkstra.get(i).getOrigin();
             Node OrigineBellmanFord = ArcsBellmanFord.get(i).getOrigin();
             Node DestinationDijkstra = ArcsDijkstra.get(i).getDestination();
             Node DestinationBellmanFord = ArcsBellmanFord.get(i).getDestination();
-            // Recuperation du cout des arcs
+
             float distanceArcDijkstra = ArcsDijkstra.get(i).getLength();
             float distanceArcBellmanFord = ArcsBellmanFord.get(i).getLength();
 
             if(OrigineDijkstra.getId()!= OrigineBellmanFord.getId()|| DestinationDijkstra.getId()!= DestinationBellmanFord.getId()  ){
-                System.out.println("A partir de l'arc"+i+"les paths ne sont pas les mêmes");
+                System.out.println("The paths aren't the same after :" + i);
                 return false;
             }
             if( distanceArcDijkstra!= distanceArcBellmanFord ){
-                System.out.println("A partir de l'arc"+i+"les paths n'ont plus la meme taille");
+                System.out.println("They don't have the same size after :" + i);
                 return false;
             }
         }
 
-        System.out.println("Dijkstra et BellmanFord ont les même paths");
+        System.out.println("Dijkstra and BellmanFord have the same path");
         return true;
     }
     // For the bigger maps
